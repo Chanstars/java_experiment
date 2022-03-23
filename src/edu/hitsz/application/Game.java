@@ -52,7 +52,7 @@ public class Game extends JPanel {
 
 
     public Game() {
-        heroAircraft = new HeroAircraft(
+        heroAircraft = HeroAircraft.getInstance(
                 Main.WINDOW_WIDTH / 2,
                 Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
                 0, 0, 100);
@@ -285,6 +285,7 @@ public class Game extends JPanel {
         enemyBullets.removeIf(AbstractFlyingObject::notValid);
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid);
+        supplies.removeIf(AbstractFlyingObject::notValid);
     }
 
 
