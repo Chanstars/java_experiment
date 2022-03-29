@@ -32,11 +32,6 @@ public class HeroAircraft extends AbstractAircraft {
     private int direction = -1;
 
     /**
-     * 标识敌机
-     */
-    private int flag = 0;
-
-    /**
      * @param locationX 英雄机位置x坐标
      * @param locationY 英雄机位置y坐标
      * @param speedX 英雄机射出的子弹的基准速度（英雄机无特定速度）

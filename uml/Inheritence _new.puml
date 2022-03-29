@@ -47,7 +47,8 @@ class BaseBullet
 
 abstract class Supply
 {
-    + Supply(int locationX, int locationY, int speedX, int speedY)
+    # power:int
+    + Supply(int locationX, int locationY, int speedX, int speedY,int power)
     + forward():void
     + function():int
 }
@@ -69,12 +70,14 @@ Supply <|-- FireSupply
 Supply <|-- BombSupply
 
 class HeroAircraft {
+    -{static}heroAircraft:HeroAircraft
     - shootNum:int
     - power:int
     - direction:int
-    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<BaseBullet>
+    + {static}getInstance(int locationX, int locationY, int speedX, int speedY, int hp):HeroAircraft
 }
 
 class MobEnemy {
@@ -111,21 +114,20 @@ class EnemyBullet {
 }
 
 class HpSupply{
-    - hpPower:int
     + HpSupply(int locationX, int locationY,
-         int speedX, int speedY)
+         int speedX, int speedY, int power)
     + function():int
 }
 
 class FireSupply{
     + FireSupply(int locationX, int locationY,
-         int speedX, int speedY)
+         int speedX, int speedY, int power)
     + function():int
 }
 
 class BombSupply{
     + BombSupply(int locationX, int locationY,
-         int speedX, int speedY)
+         int speedX, int speedY, int power)
     + function():int
 }
 

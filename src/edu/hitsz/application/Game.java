@@ -90,24 +90,30 @@ public class Game extends JPanel {
                 System.out.println(time);
                 // 新敌机产生
                 double rand1 = Math.random()*3;
+                EnemyAircraftFactory enemyAircraftFactory;
+                AbstractAircraft newEnemy;
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     if(rand1<=2) {
-                        enemyAircrafts.add(new MobEnemy(
+                        enemyAircraftFactory = new MobEnemyFactory();
+                        newEnemy = enemyAircraftFactory.createEnemyAircraft(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())) * 1,
                                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2) * 1,
                                 0,
                                 10,
                                 30
-                        ));
+                        );
+                        enemyAircrafts.add(newEnemy);
                     }
                     else {
-                        enemyAircrafts.add(new EliteEnemy(
+                        enemyAircraftFactory = new EliteEnemyFactory();
+                        newEnemy = enemyAircraftFactory.createEnemyAircraft(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())) * 1,
                                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2) * 1,
                                 0,
                                 10,
                                 60
-                        ));
+                        );
+                        enemyAircrafts.add(newEnemy);
                     }
                 }
                 // 飞机射出子弹
@@ -231,21 +237,26 @@ public class Game extends JPanel {
                     herobullet.vanish();
                     // 精英敌机坠毁概率产生道具
                     if (enemyAircraft.notValid()) {
+                        SupplyFactory supplyFactory;
+                        Supply supply;
                         double rand2 = Math.random()*10;
                         if(rand2<5){}
                         else if(rand2>=5&&rand2<8&&enemyAircraft.getMaxHp()==60){
-                            Supply supply = new HpSupply(enemyAircraft.getLocationX(),enemyAircraft.getLocationY(),0,
+                            supplyFactory = new HpSupplyFactory();
+                            supply = supplyFactory.createSupply(enemyAircraft.getLocationX(),enemyAircraft.getLocationY(),0,
                                     enemyAircraft.getSpeedY(),50);
                             supplies.add(supply);
                         }
                         else if(rand2>=8&&rand2<9&&enemyAircraft.getMaxHp()==60){
-                            Supply supply = new FireSupply(enemyAircraft.getLocationX(),enemyAircraft.getLocationY(),0,
-                                    enemyAircraft.getSpeedY());
+                            supplyFactory = new FireSupplyFactory();
+                            supply = supplyFactory.createSupply(enemyAircraft.getLocationX(),enemyAircraft.getLocationY(),0,
+                                    enemyAircraft.getSpeedY(),0);
                             supplies.add(supply);
                         }
                         else if(rand2>=9&&rand2<10&&enemyAircraft.getMaxHp()==60){
-                            Supply supply = new BombSupply(enemyAircraft.getLocationX(),enemyAircraft.getLocationY(),0,
-                                    enemyAircraft.getSpeedY());
+                            supplyFactory = new BombSupplyFactory();
+                            supply = supplyFactory.createSupply(enemyAircraft.getLocationX(), enemyAircraft.getLocationY(), 0,
+                                    enemyAircraft.getSpeedY(), 0);
                             supplies.add(supply);
                         }
                         else {}

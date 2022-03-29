@@ -2,12 +2,15 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
-import edu.hitsz.bullet.EnemyBullet;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class BossEnemy extends AbstractAircraft {
+/**
+ * BOSS敌机
+ * @author hitsz
+ */
+public class BossEnemy extends AbstractAircraft{
 
     /**攻击方式 */
 
@@ -30,7 +33,15 @@ public class BossEnemy extends AbstractAircraft {
         super(locationX, locationY, speedX, speedY, hp);
     }
 
-    public void forward() {}
+    @Override
+    public void forward() {
+        super.forward();
+        // 判定 y 轴向下飞行出界
+        if (locationY >= Main.WINDOW_HEIGHT ) {
+            vanish();
+        }
+    }
 
+    @Override
     public List<BaseBullet> shoot()  {return new LinkedList<>();}
 }

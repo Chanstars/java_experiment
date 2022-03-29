@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 
-public class EliteEnemy extends AbstractAircraft {
+public class EliteEnemy extends AbstractAircraft{
 
     /**攻击方式 */
 
