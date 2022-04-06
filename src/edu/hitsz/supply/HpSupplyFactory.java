@@ -6,8 +6,8 @@ package edu.hitsz.supply;
  */
 public class HpSupplyFactory implements SupplyFactory{
     @Override
-    public Supply createSupply(int locationX, int locationY, int speedX, int speedY, int power){
-        Supply supply = new HpSupply(locationX, locationY, speedX, speedY, power);
+    public AbstractSupply createSupply(int locationX, int locationY, int speedX, int speedY, int power){
+        AbstractSupply supply = new HpSupply(locationX, locationY, speedX, speedY, power);
         return supply;
     }
 }

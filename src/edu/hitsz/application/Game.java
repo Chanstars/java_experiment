@@ -36,7 +36,7 @@ public class Game extends JPanel {
     private final List<AbstractAircraft> enemyAircrafts;
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
-    private final List<Supply> supplies;
+    private final List<AbstractSupply> supplies;
 
     private int enemyMaxNumber = 5;
 
@@ -197,7 +197,7 @@ public class Game extends JPanel {
     }
 
     private void suppliesMoveAction() {
-        for (Supply supply : supplies) {
+        for (AbstractSupply supply : supplies) {
             supply.forward();
         }
     }
@@ -238,7 +238,7 @@ public class Game extends JPanel {
                     // 精英敌机坠毁概率产生道具
                     if (enemyAircraft.notValid()) {
                         SupplyFactory supplyFactory;
-                        Supply supply;
+                        AbstractSupply supply;
                         double rand2 = Math.random()*10;
                         if(rand2<5){}
                         else if(rand2>=5&&rand2<8&&enemyAircraft.getMaxHp()==60){
@@ -272,7 +272,7 @@ public class Game extends JPanel {
         }
 
         // 英雄机获得道具，道具生效
-        for (Supply supply : supplies){
+        for (AbstractSupply supply : supplies){
             if(supply.notValid()){
                 continue;
             }

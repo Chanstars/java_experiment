@@ -4,7 +4,7 @@ package edu.hitsz.supply;
  * 火力道具
  * @author hitsz
  */
-public class FireSupply extends Supply{
+public class FireSupply extends AbstractSupply{
 
     public FireSupply(int locationX, int locationY, int speedX, int speedY, int power){
         super(locationX, locationY, speedX, speedY, power);

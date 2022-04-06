@@ -9,13 +9,13 @@ import edu.hitsz.basic.AbstractFlyingObject;
  *
  * @author hitsz
  */
-public abstract class Supply extends AbstractFlyingObject {
+public abstract class AbstractSupply extends AbstractFlyingObject {
 
     /**
      * 道具生效具体数值
      */
     protected int power;
-    public Supply(int locationX, int locationY, int speedX, int speedY, int power){
+    public AbstractSupply(int locationX, int locationY, int speedX, int speedY, int power){
         super(locationX, locationY, speedX, speedY);
         this.power = power;
     }
