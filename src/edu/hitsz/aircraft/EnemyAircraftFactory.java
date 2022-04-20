@@ -4,5 +4,5 @@ package edu.hitsz.aircraft;
  * @author hitsz
  */
 public interface EnemyAircraftFactory {
-    public AbstractAircraft createEnemyAircraft(int locationX, int locationY, int speedX, int speedY, int hp);
+    public AbstractAircraft createEnemyAircraft();
 }

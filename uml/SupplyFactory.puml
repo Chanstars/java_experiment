@@ -1,31 +1,31 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class Supply
+abstract class AbstractSupply
 class HpSupply
 class FireSupply
 class BombSupply
 
 interface SupplyFactory
 {
-    + createSupply(...):Supply
+    + createSupply(...):AbstractSupply
 }
 
 class HpSupplyFactory{
-    + createSupply(...):Supply
+    + createSupply(...):AbstractSupply
 }
 
 class FireSupplyFactory{
-    + createSupply(...):Supply
+    + createSupply(...):AbstractSupply
 }
 
 class BombSupplyFactory{
-    + createSupply(...):Supply
+    + createSupply(...):AbstractSupply
 }
 
-Supply <|-down- HpSupply
-Supply <|-down- FireSupply
-Supply <|-down- BombSupply
+AbstractSupply <|-up- HpSupply
+AbstractSupply <|-up- FireSupply
+AbstractSupply <|-up- BombSupply
 
 SupplyFactory <|.. HpSupplyFactory
 SupplyFactory <|.. FireSupplyFactory

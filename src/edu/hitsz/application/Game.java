@@ -3,6 +3,8 @@ package edu.hitsz.application;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
+import edu.hitsz.strategy.CommonShoot;
+import edu.hitsz.strategy.ShootContext;
 import edu.hitsz.supply.*;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -39,6 +41,8 @@ public class Game extends JPanel {
     private final List<AbstractSupply> supplies;
 
     private int enemyMaxNumber = 5;
+    //当前Boss机数量
+    private int bossFlag = 0;
 
     private boolean gameOverFlag = false;
     private int score = 0;
@@ -47,16 +51,13 @@ public class Game extends JPanel {
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
      */
-    private int cycleDuration = 600;
+    private int cycleDuration = 400;
     private int cycleTime = 0;
 
 
     public Game() {
-        heroAircraft = HeroAircraft.getInstance(
-                Main.WINDOW_WIDTH / 2,
-                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
-                0, 0, 100);
-
+        heroAircraft = HeroAircraft.getInstance();
+        heroAircraft.context = new ShootContext(new CommonShoot());
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
@@ -93,26 +94,22 @@ public class Game extends JPanel {
                 EnemyAircraftFactory enemyAircraftFactory;
                 AbstractAircraft newEnemy;
                 if (enemyAircrafts.size() < enemyMaxNumber) {
-                    if(rand1<=2) {
+                    if(score%100 == 0&&score != 0){
+                        if(bossFlag == 0){
+                            enemyAircraftFactory = new BossEnemyFactory();
+                            newEnemy = enemyAircraftFactory.createEnemyAircraft();
+                            enemyAircrafts.add(newEnemy);
+                            bossFlag = 1;
+                        }
+                    }
+                    else if(rand1<=2) {
                         enemyAircraftFactory = new MobEnemyFactory();
-                        newEnemy = enemyAircraftFactory.createEnemyAircraft(
-                                (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())) * 1,
-                                (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2) * 1,
-                                0,
-                                10,
-                                30
-                        );
+                        newEnemy = enemyAircraftFactory.createEnemyAircraft();
                         enemyAircrafts.add(newEnemy);
                     }
                     else {
                         enemyAircraftFactory = new EliteEnemyFactory();
-                        newEnemy = enemyAircraftFactory.createEnemyAircraft(
-                                (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())) * 1,
-                                (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2) * 1,
-                                0,
-                                10,
-                                60
-                        );
+                        newEnemy = enemyAircraftFactory.createEnemyAircraft();
                         enemyAircrafts.add(newEnemy);
                     }
                 }
@@ -178,7 +175,7 @@ public class Game extends JPanel {
         }
 
         // 英雄射击
-        heroBullets.addAll(heroAircraft.shoot());
+        heroBullets.addAll(heroAircraft.fire());
     }
 
     private void bulletsMoveAction() {
@@ -210,18 +207,18 @@ public class Game extends JPanel {
      */
     private void crashCheckAction() {
         // 敌机子弹攻击英雄
-        for (BaseBullet elitebullet : enemyBullets) {
-            if (elitebullet.notValid()) {
+        for (BaseBullet eliteBullet : enemyBullets) {
+            if (eliteBullet.notValid()) {
                 continue;
             }
-            if (heroAircraft.crash(elitebullet)){
-                heroAircraft.decreaseHp(elitebullet.getPower());
-                elitebullet.vanish();
+            if (heroAircraft.crash(eliteBullet)){
+                heroAircraft.decreaseHp(eliteBullet.getPower());
+                eliteBullet.vanish();
             }
         }
         // 英雄子弹攻击敌机
-        for (BaseBullet herobullet : heroBullets) {
-            if (herobullet.notValid()) {
+        for (BaseBullet heroBullet : heroBullets) {
+            if (heroBullet.notValid()) {
                 continue;
             }
             for (AbstractAircraft enemyAircraft : enemyAircrafts) {
@@ -230,33 +227,36 @@ public class Game extends JPanel {
                     // 避免多个子弹重复击毁同一敌机的判定
                     continue;
                 }
-                if (enemyAircraft.crash(herobullet)) {
+                if (enemyAircraft.crash(heroBullet)) {
                     // 敌机撞击到英雄机子弹
                     // 敌机损失一定生命值
-                    enemyAircraft.decreaseHp(herobullet.getPower());
-                    herobullet.vanish();
+                    enemyAircraft.decreaseHp(heroBullet.getPower());
+                    heroBullet.vanish();
                     // 精英敌机坠毁概率产生道具
                     if (enemyAircraft.notValid()) {
                         SupplyFactory supplyFactory;
                         AbstractSupply supply;
                         double rand2 = Math.random()*10;
-                        if(rand2<5){}
-                        else if(rand2>=5&&rand2<8&&enemyAircraft.getMaxHp()==60){
+                        if(enemyAircraft.getClass()==BossEnemy.class){
+                            bossFlag = 0;
+                        }
+                        else if(rand2<5){}
+                        else if(rand2>=5&&rand2<8&&enemyAircraft.getClass()==EliteEnemy.class){
                             supplyFactory = new HpSupplyFactory();
                             supply = supplyFactory.createSupply(enemyAircraft.getLocationX(),enemyAircraft.getLocationY(),0,
-                                    enemyAircraft.getSpeedY(),50);
+                                    enemyAircraft.getSpeedY());
                             supplies.add(supply);
                         }
-                        else if(rand2>=8&&rand2<9&&enemyAircraft.getMaxHp()==60){
+                        else if(rand2>=8&&rand2<9&&enemyAircraft.getClass()==EliteEnemy.class){
                             supplyFactory = new FireSupplyFactory();
                             supply = supplyFactory.createSupply(enemyAircraft.getLocationX(),enemyAircraft.getLocationY(),0,
-                                    enemyAircraft.getSpeedY(),0);
+                                    enemyAircraft.getSpeedY());
                             supplies.add(supply);
                         }
-                        else if(rand2>=9&&rand2<10&&enemyAircraft.getMaxHp()==60){
+                        else if(rand2>=9&&rand2<10&&enemyAircraft.getClass()==EliteEnemy.class){
                             supplyFactory = new BombSupplyFactory();
                             supply = supplyFactory.createSupply(enemyAircraft.getLocationX(), enemyAircraft.getLocationY(), 0,
-                                    enemyAircraft.getSpeedY(), 0);
+                                    enemyAircraft.getSpeedY());
                             supplies.add(supply);
                         }
                         else {}
@@ -277,7 +277,7 @@ public class Game extends JPanel {
                 continue;
             }
             if(heroAircraft.crash(supply)){
-                heroAircraft.decreaseHp(-supply.function());
+                supply.function();
                 supply.vanish();
             }
         }

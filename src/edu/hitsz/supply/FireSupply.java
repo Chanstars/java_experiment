@@ -1,18 +1,20 @@
 package edu.hitsz.supply;
 
+import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.strategy.ScatterShoot;
+
 /**
  * 火力道具
  * @author hitsz
  */
 public class FireSupply extends AbstractSupply{
-
-    public FireSupply(int locationX, int locationY, int speedX, int speedY, int power){
-        super(locationX, locationY, speedX, speedY, power);
+    public FireSupply(int locationX, int locationY, int speedX, int speedY){
+        super(locationX, locationY, speedX, speedY);
     };
 
     @Override
-    public int function(){
-        System.out.println("FireSupply active!\n");
-        return power;
+    public void function(){
+        heroSupply.setShootNum(3);
+        heroSupply.context.setStrategy(new ScatterShoot());
     }
 }

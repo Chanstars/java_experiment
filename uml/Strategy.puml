@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface ShootStrategy{
+    # hero:HeroAircraft
+    + {abstract}shootStrategy(int direction, int shootNum, int power):List<BaseBullet>
+}
+
+class CommonShoot{
+    + shootStrategy(int direction, int shootNum, int power):List<BaseBullet>
+}
+class ScatterShoot{
+    + shootStrategy(int direction, int shootNum, int power):List<BaseBullet>
+}
+
+class ShootContext{
+    - shootStrategy:ShootStrategy
+    + ShootContext(ShootStrategy strategy)
+    + setStrategy(ShootStrategy strategy):void
+    + executeStrategy(int direction, int shootNum, int power):List<BaseBullet>
+
+}
+ShootStrategy <|.. CommonShoot
+ShootStrategy <|.. ScatterShoot
+ShootContext o--> ShootStrategy
+@enduml

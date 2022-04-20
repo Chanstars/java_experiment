@@ -17,10 +17,7 @@ class HeroAircraftTest {
     private HeroAircraft heroAircraft;
     @BeforeEach
     void setUp() {
-        heroAircraft = HeroAircraft.getInstance(
-                Main.WINDOW_WIDTH / 2,
-                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
-                0, 0, 100);
+        heroAircraft = HeroAircraft.getInstance();
     }
 
     @AfterEach

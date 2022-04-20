@@ -6,13 +6,12 @@ package edu.hitsz.supply;
  */
 public class BombSupply extends AbstractSupply {
 
-    public BombSupply(int locationX, int locationY, int speedX, int speedY, int power){
-        super(locationX, locationY, speedX, speedY, power);
+    public BombSupply(int locationX, int locationY, int speedX, int speedY){
+        super(locationX, locationY, speedX, speedY);
     }
 
     @Override
-    public int function(){
+    public void function(){
         System.out.println("BombSupply active!\n");
-        return power;
     }
 }

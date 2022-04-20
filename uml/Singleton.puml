@@ -7,10 +7,13 @@ class HeroAircraft {
     - shootNum:int
     - power:int
     - direction:int
+    + context:ShootContext
     - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + {static}getInstance():HeroAircraft
     + forward():void
     + shoot():List<BaseBullet>
-    + {static}getInstance(int locationX, int locationY, int speedX, int speedY, int hp):HeroAircraft
+    + fire():List<BaseBullet>
+    + setShootNum():void
 }
 HeroAircraft <-- HeroAircraft:instance heroAircraft
 

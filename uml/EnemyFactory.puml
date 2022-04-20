@@ -9,24 +9,24 @@ class BossEnemy
 
 interface EnemyAircraftFactory
 {
-    + createEnemyAircraft(...):AbstractAircraft
+    + createEnemyAircraft():AbstractAircraft
 }
 
 class MobEnemyFactory{
-    + createEnemyAircraft(...):AbstractAircraft
+    + createEnemyAircraft():AbstractAircraft
 }
 
 class EliteEnemyFactory{
-    + createEnemyAircraft(...):AbstractAircraft
+    + createEnemyAircraft():AbstractAircraft
 }
 
 class BossEnemyFactory{
-    + createEnemyAircraft(...):AbstractAircraft
+    + createEnemyAircraft():AbstractAircraft
 }
 
-AbstractAircraft <|-down- MobEnemy
-AbstractAircraft <|-down- EliteEnemy
-AbstractAircraft <|-down- BossEnemy
+AbstractAircraft <|-up- MobEnemy
+AbstractAircraft <|-up- EliteEnemy
+AbstractAircraft <|-up- BossEnemy
 
 EnemyAircraftFactory <|.. MobEnemyFactory
 EnemyAircraftFactory <|.. EliteEnemyFactory

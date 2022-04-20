@@ -5,5 +5,5 @@ package edu.hitsz.supply;
  * @author hitsz
  */
 public interface SupplyFactory {
-    public AbstractSupply createSupply(int locationX, int locationY, int speedX, int speedY, int power);
+    public AbstractSupply createSupply(int locationX, int locationY, int speedX, int speedY);
 }

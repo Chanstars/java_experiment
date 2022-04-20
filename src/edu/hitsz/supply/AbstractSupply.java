@@ -1,5 +1,6 @@
 package edu.hitsz.supply;
 
+import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.application.Main;
 import edu.hitsz.basic.AbstractFlyingObject;
 
@@ -10,14 +11,13 @@ import edu.hitsz.basic.AbstractFlyingObject;
  * @author hitsz
  */
 public abstract class AbstractSupply extends AbstractFlyingObject {
+    protected HeroAircraft heroSupply = HeroAircraft.getInstance();
 
     /**
      * 道具生效具体数值
      */
-    protected int power;
-    public AbstractSupply(int locationX, int locationY, int speedX, int speedY, int power){
+    public AbstractSupply(int locationX, int locationY, int speedX, int speedY){
         super(locationX, locationY, speedX, speedY);
-        this.power = power;
     }
 
     @Override
@@ -36,5 +36,5 @@ public abstract class AbstractSupply extends AbstractFlyingObject {
         }
     }
 
-    public abstract int function();
+    public abstract void function();
 }

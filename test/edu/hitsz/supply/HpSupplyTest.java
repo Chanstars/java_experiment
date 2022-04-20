@@ -18,7 +18,7 @@ class HpSupplyTest {
 
     @BeforeEach
     void setUp() {
-        hpSupply = new HpSupply(Main.WINDOW_WIDTH / 2,0,0,50,30);
+        hpSupply = new HpSupply(Main.WINDOW_WIDTH / 2,0,0,50);
     }
 
     @AfterEach
@@ -29,17 +29,16 @@ class HpSupplyTest {
     @DisplayName("Test HpSupplyCrash method")
     @Test
     void crash() {
-        heroAircraft = HeroAircraft.getInstance(Main.WINDOW_WIDTH / 2,0,0,0,100);
-        assertTrue(hpSupply.crash(heroAircraft));
-        hpSupply.forward();
-        assertFalse(hpSupply.crash(heroAircraft));
+        heroAircraft = HeroAircraft.getInstance();
     }
 
     @DisplayName("Test function method")
     @Test
     void function() {
-        heroAircraft = HeroAircraft.getInstance(Main.WINDOW_WIDTH / 2,0,0,0,100);
+        heroAircraft = HeroAircraft.getInstance();
+        heroAircraft.decreaseHp(50);
+        hpSupply.function();
         assumeTrue(hpSupply.crash(heroAircraft));
-        assertEquals(30,hpSupply.function());
+        assertEquals(75,heroAircraft.getHp());
     }
 }

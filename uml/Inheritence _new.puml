@@ -45,17 +45,17 @@ class BaseBullet
 	+ getPower():int
 }
 
-abstract class Supply
+abstract class AbstractSupply
 {
-    # power:int
-    + Supply(int locationX, int locationY, int speedX, int speedY,int power)
+    # heroSupply:HeroAircraft
+    + AbstractSupply(int locationX, int locationY, int speedX, int speedY)
     + forward():void
-    + function():int
+    + function():void
 }
 
 AbstractFlyingObject <|-- AbstractAircraft
 AbstractFlyingObject <|-- BaseBullet
-AbstractFlyingObject <|-- Supply
+AbstractFlyingObject <|-- AbstractSupply
 
 AbstractAircraft <|-- HeroAircraft
 AbstractAircraft <|-- MobEnemy
@@ -65,19 +65,22 @@ AbstractAircraft <|-- BossEnemy
 BaseBullet <|-- HeroBullet
 BaseBullet <|-- EnemyBullet
 
-Supply <|-- HpSupply
-Supply <|-- FireSupply
-Supply <|-- BombSupply
+AbstractSupply <|-- HpSupply
+AbstractSupply <|-- FireSupply
+AbstractSupply <|-- BombSupply
 
 class HeroAircraft {
     -{static}heroAircraft:HeroAircraft
     - shootNum:int
     - power:int
     - direction:int
+    + context:ShootContext
     - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + {static}getInstance():HeroAircraft
     + forward():void
     + shoot():List<BaseBullet>
-    + {static}getInstance(int locationX, int locationY, int speedX, int speedY, int hp):HeroAircraft
+    + fire():List<BaseBullet>
+    + setShootNum():void
 }
 
 class MobEnemy {
@@ -114,21 +117,22 @@ class EnemyBullet {
 }
 
 class HpSupply{
+    # hpPower:int
     + HpSupply(int locationX, int locationY,
-         int speedX, int speedY, int power)
-    + function():int
+         int speedX, int speedY)
+    + function():void
 }
 
 class FireSupply{
     + FireSupply(int locationX, int locationY,
-         int speedX, int speedY, int power)
-    + function():int
+         int speedX, int speedY)
+    + function():void
 }
 
 class BombSupply{
     + BombSupply(int locationX, int locationY,
-         int speedX, int speedY, int power)
-    + function():int
+         int speedX, int speedY)
+    + function():void
 }
 
 @enduml
