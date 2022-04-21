@@ -11,15 +11,15 @@ import java.util.List;
  */
 
 public class ShootContext {
-    private ShootStrategy shootStrategy;
-    public ShootContext(ShootStrategy shootStrategy){
-        this.shootStrategy = shootStrategy;
+    private AbstractShootStrategy abstractShootStrategy;
+    public ShootContext(AbstractShootStrategy abstractShootStrategy){
+        this.abstractShootStrategy = abstractShootStrategy;
     }
-    public void setStrategy(ShootStrategy shootStrategy){
-        this.shootStrategy = shootStrategy;
+    public void setStrategy(AbstractShootStrategy abstractShootStrategy){
+        this.abstractShootStrategy = abstractShootStrategy;
     }
     public List<BaseBullet> executeStrategy(int direction, int shootNum, int power){
-        return shootStrategy.shootStrategy(direction, shootNum, power);
+        return abstractShootStrategy.shootStrategy(direction, shootNum, power);
     }
 
 }

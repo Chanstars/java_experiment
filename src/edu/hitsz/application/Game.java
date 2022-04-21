@@ -6,11 +6,14 @@ import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.strategy.CommonShoot;
 import edu.hitsz.strategy.ShootContext;
 import edu.hitsz.supply.*;
+import edu.hitsz.scoretable.*;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;
@@ -41,7 +44,6 @@ public class Game extends JPanel {
     private final List<AbstractSupply> supplies;
 
     private int enemyMaxNumber = 5;
-    //当前Boss机数量
     private int bossFlag = 0;
 
     private boolean gameOverFlag = false;
@@ -138,6 +140,15 @@ public class Game extends JPanel {
             // 游戏结束检查
             if (heroAircraft.getHp() <= 0) {
                 // 游戏结束
+                LocalDateTime time = LocalDateTime.now();
+                ScoreDao scoreDao = new ScoreTable();
+                Score scoreList = new Score("User",time.getMonthValue(),time.getDayOfMonth(),time.getHour(),time.getMinute(),score);
+                System.out.println(
+                                "**************************************************"+"\n"
+                                +"                     得分排行榜                    "+"\n"
+                                +"**************************************************"+"\n"
+                );
+                scoreDao.getScoreTable(scoreList);
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");

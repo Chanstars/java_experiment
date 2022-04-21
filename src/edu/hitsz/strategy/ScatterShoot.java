@@ -1,6 +1,5 @@
 package edu.hitsz.strategy;
 
-import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.HeroBullet;
 
@@ -13,7 +12,7 @@ import java.util.List;
  * @author hitsz
  */
 
-public class ScatterShoot extends ShootStrategy {
+public class ScatterShoot extends AbstractShootStrategy {
     @Override
     public List<BaseBullet> shootStrategy(int direction, int shootNum, int power) {
         List<BaseBullet> res = new LinkedList<>();

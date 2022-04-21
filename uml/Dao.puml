@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Score{
+    -userName:String
+    -month:int
+    -day:int
+    -hour:int
+    -minute:int
+    -score:int
+    +Score(String userName, int month, int day, int hour, int minute, int score)
+    +getUserName:String
+    +getMonth:int
+    +getDay:int
+    +getHour:int
+    +getMinute:int
+    +getScore:int
+}
+
+class ScoreTable{
+    -scores:LinkedList<Score>
+    -read()throws IOException:void
+    -readLine(String str):Score
+    -write()throws IOException:void
+    -writeLine(FileWriter writer, Score score)throws IOException:void
+    -sort():LinkedList<Score>
+    +getScoreTable(Score score):void
+}
+
+interface ScoreDao
+{
+    + getScoreTable(Score score):void
+}
+
+ScoreDao <|.. ScoreTable
+ScoreTable -down-> Score
+@enduml

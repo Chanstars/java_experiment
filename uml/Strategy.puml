@@ -1,7 +1,7 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-interface ShootStrategy{
+interface AbstractShootStrategy{
     # hero:HeroAircraft
     + {abstract}shootStrategy(int direction, int shootNum, int power):List<BaseBullet>
 }
@@ -20,7 +20,7 @@ class ShootContext{
     + executeStrategy(int direction, int shootNum, int power):List<BaseBullet>
 
 }
-ShootStrategy <|.. CommonShoot
-ShootStrategy <|.. ScatterShoot
-ShootContext o--> ShootStrategy
+AbstractShootStrategy <|.. CommonShoot
+AbstractShootStrategy <|.. ScatterShoot
+ShootContext o--> AbstractShootStrategy
 @enduml
