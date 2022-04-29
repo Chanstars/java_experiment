@@ -4,6 +4,7 @@ import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.strategy.ShootContext;
+import thread.MusicThread;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -76,6 +77,7 @@ public class HeroAircraft extends AbstractAircraft {
     }
 
     public List<BaseBullet> fire(){
+        new MusicThread("src\\audio\\bullet.wav").start();
         return context.executeStrategy(direction,shootNum,power);
     }
 

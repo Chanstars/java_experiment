@@ -1,5 +1,7 @@
 package edu.hitsz.supply;
 
+import thread.MusicThread;
+
 /**
  * 炸弹道具
  * @author hitsz
@@ -12,6 +14,8 @@ public class BombSupply extends AbstractSupply {
 
     @Override
     public void function(){
+        new MusicThread("src\\audio\\get_supply.wav").start();
+        new MusicThread("src\\audio\\bomb_explosion.wav").start();
         System.out.println("BombSupply active!\n");
     }
 }

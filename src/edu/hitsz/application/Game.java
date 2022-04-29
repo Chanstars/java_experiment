@@ -8,6 +8,7 @@ import edu.hitsz.strategy.ShootContext;
 import edu.hitsz.supply.*;
 import edu.hitsz.scoretable.*;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import thread.MusicThread;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,15 +36,17 @@ public class Game extends JPanel {
     /**
      * 时间间隔(ms)，控制刷新频率
      */
-    private int timeInterval = 40;
+    private final int timeInterval = 40;
 
     private final HeroAircraft heroAircraft;
     private final List<AbstractAircraft> enemyAircrafts;
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
     private final List<AbstractSupply> supplies;
+    private final MusicThread bgmThread = new MusicThread("src\\audio\\bgm.wav");
+    private MusicThread bossThread;
 
-    private int enemyMaxNumber = 5;
+    private final int enemyMaxNumber = 5;
     private int bossFlag = 0;
 
     private boolean gameOverFlag = false;
@@ -82,12 +85,11 @@ public class Game extends JPanel {
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
-
+        bgmThread.setBegin();
+        bgmThread.start();
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
-
             time += timeInterval;
-
             // 周期性执行（控制频率）
             if (timeCountAndNewCycleJudge()) {
                 System.out.println(time);
@@ -98,6 +100,8 @@ public class Game extends JPanel {
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     if(score%100 == 0&&score != 0){
                         if(bossFlag == 0){
+                            bossThread = new MusicThread("src\\audio\\bgm_boss.wav");
+                            bossThread.start();
                             enemyAircraftFactory = new BossEnemyFactory();
                             newEnemy = enemyAircraftFactory.createEnemyAircraft();
                             enemyAircrafts.add(newEnemy);
@@ -140,6 +144,8 @@ public class Game extends JPanel {
             // 游戏结束检查
             if (heroAircraft.getHp() <= 0) {
                 // 游戏结束
+                new MusicThread("src\\audio\\game_over.wav").start();
+                bgmThread.setStop();
                 LocalDateTime time = LocalDateTime.now();
                 ScoreDao scoreDao = new ScoreTable();
                 Score scoreList = new Score("User",time.getMonthValue(),time.getDayOfMonth(),time.getHour(),time.getMinute(),score);
@@ -241,6 +247,7 @@ public class Game extends JPanel {
                 if (enemyAircraft.crash(heroBullet)) {
                     // 敌机撞击到英雄机子弹
                     // 敌机损失一定生命值
+                    new MusicThread("src\\audio\\bullet_hit.wav").start();
                     enemyAircraft.decreaseHp(heroBullet.getPower());
                     heroBullet.vanish();
                     // 精英敌机坠毁概率产生道具
@@ -250,6 +257,7 @@ public class Game extends JPanel {
                         double rand2 = Math.random()*10;
                         if(enemyAircraft.getClass()==BossEnemy.class){
                             bossFlag = 0;
+                            bossThread.setStop();
                         }
                         else if(rand2<5){}
                         else if(rand2>=5&&rand2<8&&enemyAircraft.getClass()==EliteEnemy.class){

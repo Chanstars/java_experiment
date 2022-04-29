@@ -1,6 +1,8 @@
 package edu.hitsz.supply;
 
 import edu.hitsz.aircraft.HeroAircraft;
+import thread.MusicThread;
+
 /**
  * 生命恢复道具
  * @author hitsz
@@ -18,6 +20,7 @@ public class HpSupply extends AbstractSupply{
     }
     @Override
     public void function(){
+        new MusicThread("src\\audio\\get_supply.wav").start();
         heroSupply.decreaseHp(-hpPower);
     }
 }

@@ -2,6 +2,8 @@ package edu.hitsz.supply;
 
 import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.strategy.ScatterShoot;
+import thread.MusicThread;
+import thread.ShootThread;
 
 /**
  * 火力道具
@@ -14,7 +16,7 @@ public class FireSupply extends AbstractSupply{
 
     @Override
     public void function(){
-        heroSupply.setShootNum(3);
-        heroSupply.context.setStrategy(new ScatterShoot());
+        new MusicThread("src\\audio\\get_supply.wav").start();
+        new Thread(new ShootThread()).start();
     }
 }

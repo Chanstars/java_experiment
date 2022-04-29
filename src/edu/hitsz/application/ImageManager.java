@@ -42,11 +42,11 @@ public class ImageManager {
     public static BufferedImage HP_SUPPLY_IMAGE;
     public static BufferedImage FIRE_SUPPLY_IMAGE;
     public static BufferedImage BOMB_SUPPLY_IMAGE;
-
+    public static String bgMap = "src/images/bg2.jpg";
     static {
         try {
 
-            BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
+            BACKGROUND_IMAGE = ImageIO.read(new FileInputStream(bgMap));
 
             HERO_IMAGE = ImageIO.read(new FileInputStream("src/images/hero.png"));
             MOB_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/mob.png"));
@@ -84,5 +84,7 @@ public class ImageManager {
         }
         return get(obj.getClass().getName());
     }
-
+    public static void chooseBg(String map){
+        bgMap = map;
+    }
 }
