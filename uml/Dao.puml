@@ -19,17 +19,24 @@ class Score{
 
 class ScoreTable{
     -scores:LinkedList<Score>
-    -read()throws IOException:void
+    -nameOfFile:String
+    +ScoreTable(String nameOfFile)
+    -read(String filename)throws IOException:void
     -readLine(String str):Score
-    -write()throws IOException:void
+    -write(String filename)throws IOException:void
     -writeLine(FileWriter writer, Score score)throws IOException:void
     -sort():LinkedList<Score>
     +getScoreTable(Score score):void
+    +clear(File file):void
+    +getScores():LinkedList<Score>
 }
 
 interface ScoreDao
 {
     + getScoreTable(Score score):void
+    + read(String filename)throws IOException:void
+    + write(String filename)throws IOException:void
+    + clear(File file):void
 }
 
 ScoreDao <|.. ScoreTable

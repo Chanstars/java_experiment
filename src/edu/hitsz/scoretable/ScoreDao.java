@@ -1,5 +1,6 @@
 package edu.hitsz.scoretable;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,5 +10,8 @@ import java.util.List;
  * @author hitsz
  */
 public interface ScoreDao {
-    public void getScoreTable(Score score);
+    void getScoreTable(Score score);
+    void read(String filename)throws IOException;
+    void write(String filename)throws IOException;
+    void clear(File file);
 }

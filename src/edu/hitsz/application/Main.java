@@ -1,6 +1,7 @@
 package edu.hitsz.application;
 
-import edu.hitsz.ui.Hello;
+import edu.hitsz.swing.Hello;
+import edu.hitsz.swing.Table;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,12 +30,52 @@ public class Main {
                 WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //开始界面
-        //Hello hello=new Hello();
+        //第一个界面:开始界面
+        Hello helloFrame = new Hello();
+        JPanel helloPanel = helloFrame.getPanel();
+        frame.setContentPane(helloPanel);
+        frame.setVisible(true);
 
+        synchronized (MAIN_LOCK) {
+            while (helloPanel.isVisible()) {
+                // 主线程等待菜单面板关闭
+                try {
+                    MAIN_LOCK.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        //移除开始界面
+        frame.remove(helloPanel);
+
+        //第二个界面:游戏界面
         Game game = new Game();
-        frame.add(game);
+        frame.setContentPane(game);
         frame.setVisible(true);
         game.action();
+
+        synchronized (MAIN_LOCK) {
+            while (game.isVisible()) {
+                // 主线程等待菜单面板关闭
+                try {
+                    MAIN_LOCK.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        frame.remove(game);
+
+        try {
+            Table tableFrame = new Table(game.getScore(),helloFrame.getMode());
+            JPanel tablePanel = tableFrame.getPanel();
+            frame.setContentPane(tablePanel);
+            frame.setVisible(true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

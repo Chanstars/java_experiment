@@ -10,9 +10,11 @@ import edu.hitsz.scoretable.*;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import thread.MusicThread;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -44,7 +46,7 @@ public class Game extends JPanel {
     private final List<BaseBullet> enemyBullets;
     private final List<AbstractSupply> supplies;
     private final MusicThread bgmThread = new MusicThread("src\\audio\\bgm.wav");
-    private MusicThread bossThread;
+    private MusicThread bossThread = new MusicThread("src\\audio\\bgm_boss.wav");
 
     private final int enemyMaxNumber = 5;
     private int bossFlag = 0;
@@ -100,7 +102,6 @@ public class Game extends JPanel {
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     if(score%100 == 0&&score != 0){
                         if(bossFlag == 0){
-                            bossThread = new MusicThread("src\\audio\\bgm_boss.wav");
                             bossThread.start();
                             enemyAircraftFactory = new BossEnemyFactory();
                             newEnemy = enemyAircraftFactory.createEnemyAircraft();
@@ -146,20 +147,20 @@ public class Game extends JPanel {
                 // 游戏结束
                 new MusicThread("src\\audio\\game_over.wav").start();
                 bgmThread.setStop();
-                LocalDateTime time = LocalDateTime.now();
-                ScoreDao scoreDao = new ScoreTable();
-                Score scoreList = new Score("User",time.getMonthValue(),time.getDayOfMonth(),time.getHour(),time.getMinute(),score);
-                System.out.println(
-                                "**************************************************"+"\n"
-                                +"                     得分排行榜                    "+"\n"
-                                +"**************************************************"+"\n"
-                );
-                scoreDao.getScoreTable(scoreList);
+                bossThread.setStop();
+                try {
+                    this.setVisible(false);
+                    synchronized (Main.MAIN_LOCK) {
+                        // 选定难度，通知主线程结束等待
+                        Main.MAIN_LOCK.notify();
+                    }
+                }catch(Exception i){
+                    i.printStackTrace();
+                }
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
             }
-
         };
 
         /**
@@ -380,5 +381,7 @@ public class Game extends JPanel {
         g.drawString("LIFE:" + this.heroAircraft.getHp(), x, y);
     }
 
-
+    public int getScore(){
+        return score;
+    }
 }
